@@ -1,12 +1,12 @@
-Shader "Custom/StripedShader"
+Shader "Custom/CellShader"
 {
     Properties
     {
         _CommonColor("CommonColor", Color) = (1, 1, 1, 1)
-        _StripeColor1("StripeColor1", Color) = (1, 1, 1, 1)
-        _StripeColor2("StripeColor2", Color) = (1, 1, 1, 1)
+        _CellBorderColor("BorderColor", Color) = (1, 1, 1, 1)
+        _CellInnerColor("CellInnerColor", Color) = (1, 1, 1, 1)
         
-        _MaskTex ("_MaskTex", 2D) = "white" {}
+        _MaskTex ("MaskTex", 2D) = "white" {}
     }
     SubShader
     {
@@ -37,9 +37,9 @@ Shader "Custom/StripedShader"
             };
 
             float4 _CommonColor;
-            float4 _StripeColor1;
-            float4 _StripeColor2;
-
+            float4 _CellBorderColor;
+            float4 _CellInnerColor;
+            
             sampler2D _MaskTex;
             float4 _MaskTex_ST;
 
@@ -60,8 +60,8 @@ Shader "Custom/StripedShader"
                 
                 float y = clamp(IN.normal.y, 0, 1);
 
-                col = ((_StripeColor1 * col.r + _StripeColor2 * col.g) * y) + (_CommonColor * (1 - y));
-                
+                col = ((_CellBorderColor * col.r + _CellInnerColor * col.g) * y) + (_CommonColor * (1 - y));
+
                 return col;
             }
             
